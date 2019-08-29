@@ -43,10 +43,13 @@ class Application
 			application: this,
 			token: this.discordToken
 		});
-
-		this.bot.on('messageReceived', (msg) => this.commandListener.processMessage(msg));
-
+		this.onBotPrelogin(this.bot);
 		await this.bot.login();
+	}
+
+	onBotPrelogin(bot)
+	{
+		bot.on('messageReceived', (msg) => this.commandListener.processMessage(msg));
 	}
 
 	async createDatabase(databaseName, dialect)

@@ -36,9 +36,17 @@ class DiscordBot extends events.EventEmitter
 
 	onClientReady()
 	{
-		this.client.guilds.forEach((value, key) =>
+		this.client.guilds.forEach((guild, guildId) =>
 		{
-			console.log(`Logged in as ${this.client.user.tag} on guild "${value.name}"#${key}!`);
+			if (guild.available)
+			{
+				console.log(`Logged in as ${this.client.user.tag} on guild "${guild.name}"#${guildId}!`);
+			}
+			// Bot was removed from the guild
+			if (guild.deleted)
+			{
+				this.emit('removedFromGuild', guild);
+			}
 		});
 
 		this.emit('ready');
@@ -55,6 +63,8 @@ DiscordBot.events = [
 	'ready',
 	'loginComplete',
 	'messageReceived',
+	// when a bot tries to join a guild it was removed from
+	'removedFromGuild',
 ];
 
 module.exports = DiscordBot;
