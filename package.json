@@ -3,7 +3,7 @@
 	"version": "1.0.0",
 	"description": "",
 	"author": "temportalflux",
-  "repository": "temportalflux/DiscordBotLib",
+	"repository": "temportalflux/DiscordBotLib",
 	"license": "ISC",
 	"main": "index.js",
 	"dependencies": {
@@ -15,8 +15,12 @@
 		"sqlite3": "^4.1.0",
 		"yargs": "^14.0.0"
 	},
-	"devDependencies": {},
+	"devDependencies": {
+		"open": "^6.4.0"
+	},
 	"scripts": {
-		"start": "npx nodemon --inspect ./src/ApplicationSample.js"
+		"start": "npx nodemon --inspect ./src/ApplicationSample.js",
+		"inviteBot": "node ./inviteBot.js",
+		"inspect": "node ./inspect.js"
 	}
 }
