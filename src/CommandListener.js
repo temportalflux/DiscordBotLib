@@ -29,9 +29,11 @@ class CommandListener
 
 	async processMessage(msg)
 	{
+		console.log('Received message:', msg.content);
 		const match = msg.content.match(new RegExp(`!${this.prefix} (.+)`));
 		if (match !== null)
 		{
+			console.log(match);
 			try
 			{
 				const result = await this.parseCommand(match[1], msg);
