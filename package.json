@@ -20,7 +20,7 @@
 	},
 	"scripts": {
 		"start": "npx nodemon --inspect ./src/ApplicationSample.js",
-		"inviteBot": "node ./inviteBot.js",
+		"inviteBot": "node ./inviteBot.js ./secrets.json",
 		"inspect": "node ./inspect.js"
 	}
 }
