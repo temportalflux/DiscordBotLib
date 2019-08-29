@@ -1,7 +1,10 @@
 {
-	"name": "DiscordBotLib",
+	"name": "discordbot-lib",
 	"version": "1.0.0",
 	"description": "",
+	"author": "temportalflux",
+  "repository": "temportalflux/DiscordBotLib",
+	"license": "ISC",
 	"main": "index.js",
 	"dependencies": {
 		"discord.js": "^11.5.1",
@@ -15,7 +18,5 @@
 	"devDependencies": {},
 	"scripts": {
 		"start": "npx nodemon --inspect ./src/ApplicationSample.js"
-	},
-	"author": "temportalflux",
-	"license": "ISC"
+	}
 }
