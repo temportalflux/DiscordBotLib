@@ -8,21 +8,21 @@ class Application
 
 	/*
 		options: {
-			discordToken, commandPrefix, applicationName, databaseModels
+			discordToken, commands:{prefix, directory}, applicationName, databaseModels
 		}
 	*/
 	constructor(options)
 	{
 		lodash.assignIn(this, {
 			discordToken: 'INVALID_TOKEN',
-			commandPrefix: 'INVALID_COMMAND_PREFIX',
 			applicationName: 'SampleDiscordBot',
 			databaseModels: {},
+			commands: {
+				prefix: 'INVALID_COMMAND_PREFIX',
+				directory: '',
+			},
 		}, options);
-		this.commandListener = new CommandListener({
-			application: this,
-			prefix: this.commandPrefix,
-		});
+		this.commandListener = new CommandListener(this, this.commands);
 		this.init(); // async
 	}
 

@@ -4,13 +4,14 @@ const yargs = require('yargs');
 class CommandListener
 {
 
-	constructor(options)
+	constructor(application, options)
 	{
+		this.application = application;
 		lodash.assignIn(this, options);
 		this.parser = yargs;
-		if (this.commandDir)
+		if (this.directory)
 		{
-			this.parser = this.parser.commandDir(this.commandDir);
+			this.parser = this.parser.commandDir(this.directory);
 		}
 	}
 
