@@ -8,7 +8,7 @@ class Application
 
 	/*
 		options: {
-			discordToken, commandPrefix, applicationName
+			discordToken, commandPrefix, applicationName, databaseModels
 		}
 	*/
 	constructor(options)
@@ -17,6 +17,7 @@ class Application
 			discordToken: 'INVALID_TOKEN',
 			commandPrefix: 'INVALID_COMMAND_PREFIX',
 			applicationName: 'SampleDiscordBot',
+			databaseModels: {},
 		}, options);
 		this.commandListener = new CommandListener({
 			application: this,
@@ -31,6 +32,11 @@ class Application
 		await this.initBot();
 	}
 
+	async initDatabase()
+	{
+		await this.createDatabase(`${this.applicationName}.db`, 'sqlite');
+	}
+
 	async initBot()
 	{
 		this.bot = new DiscordBot({
@@ -43,24 +49,25 @@ class Application
 		await this.bot.login();
 	}
 
-	async initDatabase()
-	{
-		await this.createDatabase(`${this.applicationName}.db`, 'sqlite');
-	}
-
 	async createDatabase(databaseName, dialect)
 	{
 		this.database = new Database(databaseName, dialect,
-			{},
+			this.databaseModels,
 			{
 				// The `timestamps` field specify whether or not the `createdAt` and `updatedAt` fields will be created.
 				// This was true by default, but now is false by default.
 				timestamps: false
 			}
 		);
+		this.setupDatabase();
 		await this.database.init();
 		await this.database.sync();
+		this.onDatabaseReady();
 	}
+
+	setupDatabase() {}
+
+	onDatabaseReady() {}
 
 }
 

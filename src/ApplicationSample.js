@@ -10,8 +10,15 @@ class ApplicationSample extends Application
 			applicationName: 'sampleapp',
 			discordToken: Secrets.token,
 			commandPrefix: 'sampleapp',
+			databaseModels: {},
 		});
 	}
+
+	// Overriden from Application
+	setupDatabase() {}
+
+	// Overriden from Application
+	onDatabaseReady() {}
 
 }
 
