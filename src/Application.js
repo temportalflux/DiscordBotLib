@@ -63,10 +63,10 @@ class Application
 				timestamps: false
 			}
 		);
-		this.setupDatabase();
+		await this.setupDatabase();
 		await this.database.init();
 		await this.database.sync();
-		this.onDatabaseReady();
+		await this.onDatabaseReady();
 	}
 
 	setupDatabase() {}
