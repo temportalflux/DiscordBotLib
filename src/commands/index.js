@@ -1,3 +1,4 @@
 module.exports = {
-	add: require('./add.js'),
+	addFile: require('./addFile.js'),
+	list: require('./list.js'),
 };

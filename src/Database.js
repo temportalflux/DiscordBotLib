@@ -145,7 +145,7 @@ class Database
 		if (!Model)
 		{
 			throw {
-				code: 0,
+				error: 'InvalidModelKey',
 				message: `No model "${modelKey}" found.`
 			};
 		}
@@ -162,7 +162,7 @@ class Database
 		if (!srcEntry)
 		{
 			throw {
-				code: 1,
+				error: 'InvalidSourceEntry',
 				message: `There is no image with the name "${oldName}".`
 			};
 		}
@@ -171,7 +171,7 @@ class Database
 		if (destEntry)
 		{
 			throw {
-				code: 2,
+				error: 'DestinationEntryAlreadyExists',
 				message: `There is already an image with the name "${newName}".`
 			};
 		}

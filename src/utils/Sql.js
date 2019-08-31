@@ -10,9 +10,7 @@ function createWhereFilter(fields)
 
 function createSimpleOptions(fields)
 {
-	return {
-		where: createWhereFilter(fields),
-	};
+	return { where: createWhereFilter(fields) };
 }
 
 module.exports = {

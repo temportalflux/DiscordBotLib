@@ -2,7 +2,7 @@ const lodash = require('lodash');
 const path = require('path');
 
 module.exports = {
-	getFileUrl: (argv) =>
+	getFileUrl: (argv, requiresName=true) =>
 	{
 		const attachmentList = lodash.toPairs(argv.message.attachments);
 		// Cannot have more than 1 image in an upload
@@ -16,7 +16,7 @@ module.exports = {
 		// No attachment, must have link
 		else if (attachmentList.length <= 0)
 		{
-			if (!argv.name || !argv.url)
+			if ((requiresName && !argv.name) || !argv.url)
 			{
 				throw {
 					error: 'MissingAttachment',
@@ -24,7 +24,7 @@ module.exports = {
 				};
 			}
 			return {
-				name: argv.name.trim().replace(' ', '-'),
+				name: requiresName ? argv.name.trim().replace(' ', '-') : undefined,
 				url: argv.url,
 			};
 		}

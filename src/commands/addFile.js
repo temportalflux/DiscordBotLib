@@ -1,8 +1,8 @@
 const lodash = require('lodash');
 const {Utils} = require('discordbot-lib');
 
-module.exports = (modelKey) => ({
-	command: 'add [name] [url]',
+module.exports = (cmdName, modelKey, modifyEntryData) => ({
+	command: `${cmdName} [name] [url]`,
 	builder: (yargs) => yargs,
 	handler: async (argv) =>
 	{
@@ -24,7 +24,9 @@ module.exports = (modelKey) => ({
 				return;
 			}
 
-			await argv.application.database.createEntry(modelKey, data);
+			await argv.application.database.createEntry(modelKey,
+				modifyEntryData ? modifyEntryData(data) : data	
+			);
 			await argv.message.reply(`Your entry has been saved as "${data.name}".`);
 		}
 		catch(e)
