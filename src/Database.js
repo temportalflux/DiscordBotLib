@@ -158,7 +158,6 @@ class Database
 			(filterItem) => ({ [Sequelize.Op.eq]: filterItem })
 		);
 		
-		console.log(createFilter(0), createFilter(1), getDelta(1));
 		const srcEntry = await Model.findOne({ where: createFilter(0) });
 		if (!srcEntry)
 		{
