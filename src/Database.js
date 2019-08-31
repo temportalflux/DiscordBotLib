@@ -28,6 +28,11 @@ class Database
 		);
 	}
 
+	at(key)
+	{
+		return this.models[key];
+	}
+
 	async init()
 	{
 		try
@@ -108,8 +113,17 @@ class Database
 			anotherField: value
 		}
 	*/
-	async replaceField(Model, changes, filter={})
+	async replaceField(modelKey, changes, filter={})
 	{
+		const Model = this.at(modelKey);
+		if (!Model)
+		{
+			throw {
+				code: 0,
+				message: `No model "${modelKey}" found.`
+			};
+		}
+
 		const getDelta = (deltaIndex) => lodash.mapValues(changes, (delta) => delta[deltaIndex]);
 		const createFilter = (deltaIndex) => lodash.mapValues(
 			// merge the delta and the filter, overriding the filter using the delta
@@ -121,13 +135,19 @@ class Database
 		const srcEntry = await Model.findOne({ where: createFilter(0) });
 		if (!srcEntry)
 		{
-			throw new Error(`There is no image with the name "${oldName}".`);
+			throw {
+				code: 1,
+				message: `There is no image with the name "${oldName}".`
+			};
 		}
 
 		const destEntry = await Model.findOne({ where: createFilter(1) });
 		if (destEntry)
 		{
-			throw new Error(`There is already an image with the name "${newName}".`);
+			throw {
+				code: 2,
+				message: `There is already an image with the name "${newName}".`
+			};
 		}
 
 		const newValues = getDelta(1);
