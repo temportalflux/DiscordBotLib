@@ -118,8 +118,7 @@ class Database
 		for (const entry of data)
 		{
 			const instance = await Model.findOne({
-				where: getFilter(entry),
-				attributes: [],
+				where: getFilter(entry)
 			});
 			if (instance === null)
 			{
