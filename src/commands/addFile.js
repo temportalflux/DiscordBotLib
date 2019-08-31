@@ -1,5 +1,5 @@
 const lodash = require('lodash');
-const {Utils} = require('discordbot-lib');
+const Utils = require('../utils/index.js');
 
 module.exports = (cmdName, modelKey, modifyEntryData) => ({
 	command: `${cmdName} [name] [url]`,

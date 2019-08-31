@@ -1,4 +1,4 @@
-const { Utils } = require('../utils/index.js');
+const Utils = require('../utils/index.js');
 
 module.exports = (command, modelKey, attributes, modelToString) => ({
 	command: `${command.name} ${command.options} [count] [page]`,
