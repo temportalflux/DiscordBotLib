@@ -23,7 +23,7 @@ module.exports = (command, modelKey, attributes, modelToString, filter={}) => ({
 			typeof modelKey === 'function' ? modelKey(argv) : modelKey,
 			Utils.Sql.createWhereFilter(lodash.assign(
 				{ guild: argv.message.guild.id },
-				typeof filter === 'function' ? filter() : filter
+				typeof filter === 'function' ? filter(argv) : filter
 			)),
 			attributes, modelToString, argv.count, argv.page
 		);
