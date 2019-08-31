@@ -59,8 +59,17 @@ class Database
 		}
 	}
 
-	async listAsText(Model, whereContext, attribs, modelToText, pageCount, pageIndex)
+	async listAsText(modelKey, whereContext, attribs, modelToText, pageCount, pageIndex)
 	{
+		const Model = this.at(modelKey);
+		if (!Model)
+		{
+			throw {
+				code: 0,
+				message: `No model "${modelKey}" found.`
+			};
+		}
+
 		const {rows, count} = await Model.findAndCountAll({
 			where: whereContext,
 			attributes: attribs,
@@ -79,14 +88,32 @@ class Database
 			);
 	}
 
-	async export(Model, options)
+	async export(modelKey, options)
 	{
+		const Model = this.at(modelKey);
+		if (!Model)
+		{
+			throw {
+				code: 0,
+				message: `No model "${modelKey}" found.`
+			};
+		}
+
 		const rows = await Model.findAll(options);
 		return rows.map((modelInst) => modelInst.toJSON());
 	}
 
-	async importWithFilter(Model, data, getFilter, createEntryData)
+	async importWithFilter(modelKey, data, getFilter, createEntryData)
 	{
+		const Model = this.at(modelKey);
+		if (!Model)
+		{
+			throw {
+				code: 0,
+				message: `No model "${modelKey}" found.`
+			};
+		}
+
 		const entriesToAdd = [];
 		for (const entry of data)
 		{
