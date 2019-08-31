@@ -1,6 +1,6 @@
 const Utils = require('../utils/index.js');
 
-module.exports = (command, modelKey, attributes, modelToString) => ({
+module.exports = (command, modelKey, attributes, modelToString, filter={}) => ({
 	command: `${command.name} ${command.options} [count] [page]`,
 	builder: {
 		...command.builderBlock,
@@ -21,7 +21,10 @@ module.exports = (command, modelKey, attributes, modelToString) => ({
 
 		const text = await argv.application.database.listAsText(
 			typeof modelKey === 'function' ? modelKey(argv) : modelKey,
-			Utils.Sql.createWhereFilter({ guild: argv.message.guild.id }),
+			Utils.Sql.createWhereFilter(lodash.assign(
+				{ guild: argv.message.guild.id },
+				typeof filter === 'function' ? filter() : filter
+			)),
 			attributes, modelToString, argv.count, argv.page
 		);
 
