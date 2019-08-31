@@ -1,5 +1,5 @@
 const lodash = require('lodash');
-const Sql = rquire('sequelize');
+const Sql = require('sequelize');
 
 function createWhereFilter(fields)
 {
