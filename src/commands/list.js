@@ -1,3 +1,4 @@
+const lodash = require('lodash');
 const Utils = require('../utils/index.js');
 
 module.exports = (command, modelKey, attributes, modelToString, filter={}) => ({
