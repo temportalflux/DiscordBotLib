@@ -65,13 +65,16 @@ class Application
 		);
 		await this.setupDatabase();
 		await this.database.init();
+		await this.onDatabaseInit();
 		await this.database.sync();
 		await this.onDatabaseReady();
 	}
 
-	setupDatabase() {}
+	async setupDatabase() {}
 
-	onDatabaseReady() {}
+	async onDatabaseInit() {}
+
+	async onDatabaseReady() {}
 
 	onBotReady() {}
 
