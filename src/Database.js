@@ -54,6 +54,86 @@ class Database
 		}
 	}
 
+	async listAsText(Model, whereContext, attribs, modelToText, pageCount, pageIndex)
+	{
+		const {rows, count} = await Model.findAndCountAll({
+			where: whereContext,
+			attributes: attribs,
+			offset: pageCount * pageIndex,
+			limit: pageCount,
+		});
+		if (count <= 0)
+		{
+			return "There are no entries here";
+		}
+		return rows
+			.map(modelToText)
+			.reduce(
+				(accum, text) => `${accum}\n- ${text}`,
+				`Page ${pageIndex} (${pageIndex * pageCount + 1} - ${(pageIndex + 1) * pageCount}): (${count} total)`
+			);
+	}
+
+	async export(Model, options)
+	{
+		const rows = await Model.findAll(options);
+		return rows.map((modelInst) => modelInst.toJSON());
+	}
+
+	async importWithFilter(Model, data, getFilter, createEntryData)
+	{
+		const entriesToAdd = [];
+		for (const entry of data)
+		{
+			const instance = await Model.findOne({
+				where: getFilter(entry),
+				attributes: [],
+			});
+			if (instance === null)
+			{
+				entriesToAdd.push(createEntryData(entry));
+			}
+		}
+		if (entriesToAdd.length > 0)
+		{
+			await Model.bulkCreate(entriesToAdd);
+		}
+	}
+
+	/*
+		changes: {
+			field: [oldValue, newValue]
+		}
+		filter: {
+			anotherField: value
+		}
+	*/
+	async replaceField(Model, changes, filter={})
+	{
+		const getDelta = (deltaIndex) => lodash.mapValues(changes, (delta) => delta[deltaIndex]);
+		const createFilter = (deltaIndex) => lodash.mapValues(
+			// merge the delta and the filter, overriding the filter using the delta
+			lodash.assign({}, filter, getDelta(deltaIndex)),
+			// Change total filter object to Sql syntax
+			(filterItem) => ({ [Sql.Op.Eq]: filterItem })
+		);
+
+		const srcEntry = await Model.findOne({ where: createFilter(0) });
+		if (!srcEntry)
+		{
+			throw new Error(`There is no image with the name "${oldName}".`);
+		}
+
+		const destEntry = await Model.findOne({ where: createFilter(1) });
+		if (destEntry)
+		{
+			throw new Error(`There is already an image with the name "${newName}".`);
+		}
+
+		const newValues = getDelta(1);
+		await srcEntry.update(newValues, { fields: lodash.keys(newValues) });
+	}
+
 }
 
 module.exports = Database;
