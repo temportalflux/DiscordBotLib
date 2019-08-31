@@ -180,6 +180,19 @@ class Database
 		await srcEntry.update(newValues, { fields: lodash.keys(newValues) });
 	}
 
+	async createEntry(modelKey, data)
+	{
+		const Model = this.at(modelKey);
+		if (!Model)
+		{
+			throw {
+				error: 'InvalidModel',
+				message: `No model "${modelKey}" found.`
+			};
+		}
+		await Model.create(data);
+	}
+
 }
 
 module.exports = Database;
