@@ -36,8 +36,6 @@ class DiscordBot extends events.EventEmitter
 
 	onClientReady()
 	{
-		this.emit('ready', this.client);
-
 		this.client.guilds.forEach((guild, guildId) =>
 		{
 			if (guild.available)
@@ -51,6 +49,7 @@ class DiscordBot extends events.EventEmitter
 				this.emit('removedFromGuild', guild);
 			}
 		});
+		this.emit('ready', this.client);
 	}
 
 	onClientMessage(msg)
