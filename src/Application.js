@@ -49,6 +49,7 @@ class Application
 
 	onBotPrelogin(bot)
 	{
+		bot.on('ready', this.onBotReady.bind(this));
 		bot.on('messageReceived', (msg) => this.commandListener.processMessage(msg));
 	}
 
@@ -71,6 +72,8 @@ class Application
 	setupDatabase() {}
 
 	onDatabaseReady() {}
+
+	onBotReady() {}
 
 }
 

@@ -36,11 +36,14 @@ class DiscordBot extends events.EventEmitter
 
 	onClientReady()
 	{
+		this.emit('ready', this.client);
+
 		this.client.guilds.forEach((guild, guildId) =>
 		{
 			if (guild.available)
 			{
 				console.log(`Logged in as ${this.client.user.tag} on guild "${guild.name}"#${guildId}!`);
+				this.emit('joinedGuild', guild, this.client);
 			}
 			// Bot was removed from the guild
 			if (guild.deleted)
@@ -48,8 +51,6 @@ class DiscordBot extends events.EventEmitter
 				this.emit('removedFromGuild', guild);
 			}
 		});
-
-		this.emit('ready');
 	}
 
 	onClientMessage(msg)
@@ -65,6 +66,7 @@ DiscordBot.events = [
 	'messageReceived',
 	// when a bot tries to join a guild it was removed from
 	'removedFromGuild',
+	'joinedGuild',
 ];
 
 module.exports = DiscordBot;
