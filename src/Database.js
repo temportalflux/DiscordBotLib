@@ -155,7 +155,7 @@ class Database
 			// merge the delta and the filter, overriding the filter using the delta
 			lodash.assign({}, filter, getDelta(deltaIndex)),
 			// Change total filter object to Sql syntax
-			(filterItem) => ({ [Sequelize.Op.Eq]: filterItem })
+			(filterItem) => ({ [Sequelize.Op.eq]: filterItem })
 		);
 		
 		console.log(createFilter(0), createFilter(1), getDelta(1));
