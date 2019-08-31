@@ -1,9 +1,9 @@
 const lodash = require('lodash');
 const Utils = require('../utils/index.js');
 
-module.exports = (cmdName, modelKey, modifyEntryData) => ({
-	command: `${cmdName} [name] [url]`,
-	builder: (yargs) => yargs,
+module.exports = (createCommand, modelKey, modifyEntryData) => ({
+	command: createCommand(['[name]', '[url]']),
+	builder: command.builderBlock,
 	handler: async (argv) =>
 	{
 		if (!argv.message.guild.available) { return; }
@@ -25,7 +25,7 @@ module.exports = (cmdName, modelKey, modifyEntryData) => ({
 			}
 
 			await argv.application.database.createEntry(modelKey,
-				modifyEntryData ? modifyEntryData(data) : data	
+				modifyEntryData ? modifyEntryData(data, argv) : data	
 			);
 			await argv.message.reply(`Your entry has been saved as "${data.name}".`);
 		}

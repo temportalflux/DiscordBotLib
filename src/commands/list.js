@@ -2,7 +2,7 @@ const lodash = require('lodash');
 const Utils = require('../utils/index.js');
 
 module.exports = (command, modelKey, attributes, modelToString, filter={}) => ({
-	command: `${command.name} ${command.options} [count] [page]`,
+	command: `${command.name}${command.options ? ` ${command.options}` : ""} [count] [page]`,
 	builder: {
 		...command.builderBlock,
 		count: {
