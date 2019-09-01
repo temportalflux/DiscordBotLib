@@ -4,7 +4,7 @@ const lodash = require('lodash');
 class Database
 {
 
-	constructor(fileName, dialect, models, options)
+	constructor(fileName, dialect, models, options, logging=false)
 	{
 		// https://sequelize.org/master/manual/getting-started.html
 		this.db = new Sequelize(
@@ -12,6 +12,7 @@ class Database
 				dialect: dialect,
 				storage: fileName,
 				define: options,
+				logging: logging,
 			}
 		);
 

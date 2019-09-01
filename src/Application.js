@@ -53,7 +53,7 @@ class Application
 		bot.on('messageReceived', (msg) => this.commandListener.processMessage(msg));
 	}
 
-	async createDatabase(databaseName, dialect)
+	async createDatabase(databaseName, dialect, logging=false)
 	{
 		this.database = new Database(databaseName, dialect,
 			this.databaseModels,
@@ -61,7 +61,8 @@ class Application
 				// The `timestamps` field specify whether or not the `createdAt` and `updatedAt` fields will be created.
 				// This was true by default, but now is false by default.
 				timestamps: false
-			}
+			},
+			logging
 		);
 		await this.setupDatabase();
 		await this.database.init();
