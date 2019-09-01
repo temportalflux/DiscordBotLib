@@ -21,6 +21,7 @@ class Application
 				prefix: 'INVALID_COMMAND_PREFIX',
 				directory: '',
 			},
+			databaseLogging: false,
 		}, options);
 		this.commandListener = new CommandListener(this, this.commands);
 		this.init(); // async
@@ -34,7 +35,7 @@ class Application
 
 	async initDatabase()
 	{
-		await this.createDatabase(`${this.applicationName}.db`, 'sqlite');
+		await this.createDatabase(`${this.applicationName}.db`, 'sqlite', this.databaseLogging);
 	}
 
 	async initBot()
