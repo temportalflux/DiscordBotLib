@@ -14,7 +14,7 @@ class Database
 				dialect: dialect,
 				storage: fileName,
 				define: options,
-				sqlLogging: logging,
+				logging: sqlLogging,
 			}
 		);
 
