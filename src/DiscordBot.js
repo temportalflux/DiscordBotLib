@@ -20,6 +20,8 @@ class DiscordBot extends events.EventEmitter
 		this.logger.info("Discord client created");
 		this.client.on('ready', this.onClientReady.bind(this));
 		this.client.on('message', this.onClientMessage.bind(this));
+		this.client.on('guildCreate', (guild) => this.emit('joinedGuild', guild));
+		this.client.on('guildDelete', (guild) => this.emit('leftGuild', guild));
 	}
 
 	async login()

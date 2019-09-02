@@ -4,11 +4,11 @@ const Utils = require('../utils/index.js');
 
 module.exports = {
 	builder: {},
-	funcTemplate: (modelKey, exportedProperties, createFileName, getFilter = ((argv) => ({}))) => ({
-		handler: async (argv) =>
+	funcTemplate: (modelKey, exportedProperties, createFileName, getFilter = ((argv) => ({}))) =>
+		async (argv) =>
 		{
 			if (!argv.message.guild.available) { return; }
-	
+
 			const exportedObject = await argv.application.database.export(
 				typeof modelKey === 'function' ? modelKey(argv) : modelKey,
 				{
@@ -28,5 +28,4 @@ module.exports = {
 				]
 			});
 		}
-	})
 };
