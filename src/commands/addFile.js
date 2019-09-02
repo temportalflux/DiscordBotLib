@@ -1,45 +1,52 @@
 const lodash = require('lodash');
 const Utils = require('../utils/index.js');
 
-module.exports = (createCommand, modelKey, modifyEntryData) => ({
-	command: createCommand(['[name]', '[url]']),
-	builder: command.builderBlock,
-	handler: async (argv) =>
-	{
-		if (!argv.message.guild.available) { return; }
-
-		try
+module.exports = {
+	builder: {
+		name: {
+			optional: true,
+		},
+		url: {
+			optional: true,
+		},
+	},
+	funcTemplate: (modelKey, uniqueFields, modifyEntryData) => (async (argv) =>
 		{
-			const data = lodash.assign({
-				guild: argv.message.guild.id,
-			}, Utils.Messages.getFileUrl(argv));
+			if (!argv.message.guild.available) { return; }
 
-			const existingEntry = await argv.application.database.at(modelKey).findOne(
-				Utils.Sql.createSimpleOptions(lodash.pick(data, ['guild', 'name']))
-			);
-			
-			if (existingEntry)
+			try
 			{
-				await argv.message.reply(`There is already an entry with the name "${data.name}".`);
-				return;
-			}
+				const data = lodash.assign({
+					guild: argv.message.guild.id,
+				}, Utils.Messages.getFileUrl(argv));
 
-			await argv.application.database.createEntry(modelKey,
-				modifyEntryData ? modifyEntryData(data, argv) : data	
-			);
-			await argv.message.reply(`Your entry has been saved as "${data.name}".`);
-		}
-		catch(e)
-		{
-			switch(e.error)
+				const existingEntry = await argv.application.database.at(modelKey).findOne(
+					Utils.Sql.createSimpleOptions(lodash.pick(data, ['guild'].concat(uniqueFields)))
+				);
+
+				if (existingEntry)
+				{
+					await argv.message.reply(`There is already an entry with the name "${data.name}".`);
+					return;
+				}
+
+				await argv.application.database.createEntry(modelKey,
+					modifyEntryData ? modifyEntryData(data, argv) : data
+				);
+				await argv.message.reply(`Your entry has been saved as "${data.name}".`);
+			}
+			catch (e)
 			{
-				case 'TooManyAttachments':
-				case 'MissingAttachment':
-					await argv.message.reply(e.message);
-				default:
-					console.error(e);
-					break;
+				switch (e.error)
+				{
+					case 'TooManyAttachments':
+					case 'MissingAttachment':
+						await argv.message.reply(e.message);
+					default:
+						console.error(e);
+						break;
+				}
 			}
 		}
-	}
-});
+	),
+};
