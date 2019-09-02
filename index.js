@@ -4,5 +4,6 @@ module.exports = {
 	TemplateCommands: require('./src/commands/index.js'),
 	Service: {
 		CreateWindowsService: require('./src/service/ServiceWindows.js'),
+		Logger: require('./src/service/Logger.js'),
 	},
 };
