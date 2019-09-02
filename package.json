@@ -10,6 +10,7 @@
 		"discord.js": "^11.5.1",
 		"lodash": "^4.17.15",
 		"nodemon": "^1.19.1",
+		"node-windows": "^0.1.14",
 		"sequelize": "^5.16.0",
 		"shortid": "^2.2.14",
 		"sqlite3": "^4.1.0",
