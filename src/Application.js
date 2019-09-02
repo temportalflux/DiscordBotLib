@@ -29,18 +29,18 @@ class Application
 			},
 		}, options);
 		this.commandListener = new CommandListener(this, this.commands);
-		this.init(this.logger); // async
+		this.init(); // async
 	}
 
-	async init(logger)
+	async init()
 	{
-		await this.initDatabase(logger);
+		await this.initDatabase();
 		await this.initBot();
 	}
 
-	async initDatabase(logger)
+	async initDatabase()
 	{
-		await this.createDatabase(`${this.applicationName}.db`, 'sqlite', logger, this.databaseLogging);
+		await this.createDatabase(`${this.applicationName}.db`, 'sqlite', this.logger, this.databaseLogging);
 	}
 
 	async initBot()
@@ -48,7 +48,7 @@ class Application
 		this.bot = new DiscordBot({
 			application: this,
 			token: this.discordToken
-		});
+		}, this.logger);
 		this.onBotPrelogin(this.bot);
 		await this.bot.login();
 	}
