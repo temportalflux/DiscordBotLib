@@ -29,7 +29,7 @@ class Application
 			},
 		}, options);
 		this.commandListener = new CommandListener(this, this.commands);
-		this.init(); // async
+		this.init(this.logger); // async
 	}
 
 	async init(logger)
