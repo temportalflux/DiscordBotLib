@@ -13,7 +13,7 @@ class Application
 	*/
 	constructor(options)
 	{
-		lodash.assignIn(this, {
+		const defaults = {
 			discordToken: 'INVALID_TOKEN',
 			applicationName: 'SampleDiscordBot',
 			databaseModels: {},
@@ -27,7 +27,12 @@ class Application
 				warn: console.log,
 				error: console.error,
 			},
-		}, options);
+		};
+		lodash.assignIn(this, options);
+		lodash.keys(defaults).forEach((key) => {
+			if (this[key] === undefined)
+				this[key] = defaults[key];
+		});
 		this.commandListener = new CommandListener(this, this.commands);
 		this.init(); // async
 	}
