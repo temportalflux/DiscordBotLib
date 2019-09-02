@@ -5,10 +5,11 @@ const events = require('events');
 class DiscordBot extends events.EventEmitter
 {
 
-	constructor(options)
+	constructor(options, logger)
 	{
 		super();
 		lodash.assignIn(this, options);
+		this.logger = logger;
 		// https://discord.js.org/#/docs/main/stable/general/welcome
 		this.client = new Discord.Client();
 		this.onClientCreated();
@@ -16,7 +17,7 @@ class DiscordBot extends events.EventEmitter
 
 	onClientCreated()
 	{
-		console.log("Discord client created");
+		this.logger.info("Discord client created");
 		this.client.on('ready', this.onClientReady.bind(this));
 		this.client.on('message', this.onClientMessage.bind(this));
 	}
@@ -30,7 +31,7 @@ class DiscordBot extends events.EventEmitter
 		}
 		catch (err)
 		{
-			console.error('Could not log in bot to discord:', err);
+			this.logger.error('Could not log in bot to discord:', err);
 		}
 	}
 
@@ -40,7 +41,7 @@ class DiscordBot extends events.EventEmitter
 		{
 			if (guild.available)
 			{
-				console.log(`Logged in as ${this.client.user.tag} on guild "${guild.name}"#${guildId}!`);
+				this.logger.info(`Logged in as ${this.client.user.tag} on guild "${guild.name}"#${guildId}!`);
 				this.emit('joinedGuild', guild, this.client);
 			}
 			// Bot was removed from the guild

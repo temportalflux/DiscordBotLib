@@ -22,20 +22,25 @@ class Application
 				directory: '',
 			},
 			databaseLogging: false,
+			logger: {
+				info: console.log,
+				warn: console.log,
+				error: console.error,
+			},
 		}, options);
 		this.commandListener = new CommandListener(this, this.commands);
 		this.init(); // async
 	}
 
-	async init()
+	async init(logger)
 	{
-		await this.initDatabase();
+		await this.initDatabase(logger);
 		await this.initBot();
 	}
 
-	async initDatabase()
+	async initDatabase(logger)
 	{
-		await this.createDatabase(`${this.applicationName}.db`, 'sqlite', this.databaseLogging);
+		await this.createDatabase(`${this.applicationName}.db`, 'sqlite', logger, this.databaseLogging);
 	}
 
 	async initBot()
@@ -54,7 +59,7 @@ class Application
 		bot.on('messageReceived', (msg) => this.commandListener.processMessage(msg));
 	}
 
-	async createDatabase(databaseName, dialect, logging=false)
+	async createDatabase(databaseName, dialect, logger, logging=false)
 	{
 		this.database = new Database(databaseName, dialect,
 			this.databaseModels,
@@ -63,6 +68,7 @@ class Application
 				// This was true by default, but now is false by default.
 				timestamps: false
 			},
+			logger,
 			logging
 		);
 		await this.setupDatabase();

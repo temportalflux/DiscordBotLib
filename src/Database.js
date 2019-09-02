@@ -4,15 +4,17 @@ const lodash = require('lodash');
 class Database
 {
 
-	constructor(fileName, dialect, models, options, logging=false)
+	constructor(fileName, dialect, models, options, logger, sqlLogging=false)
 	{
+		this.logger = logger;
+
 		// https://sequelize.org/master/manual/getting-started.html
 		this.db = new Sequelize(
 			{
 				dialect: dialect,
 				storage: fileName,
 				define: options,
-				logging: logging,
+				sqlLogging: logging,
 			}
 		);
 
@@ -39,11 +41,11 @@ class Database
 		try
 		{
 			await this.db.authenticate();
-			console.log('Connection has been established successfully.');
+			this.logger.info('Connection has been established successfully.');
 		}
 		catch (err)
 		{
-			console.error('Unable to connect to the database:', err);
+			this.logger.error('Unable to connect to the database:', err);
 		}
 	}
 
@@ -52,11 +54,11 @@ class Database
 		try
 		{
 			await this.db.sync(options);
-			console.log('Database models have been synced.');
+			this.logger.info('Database models have been synced.');
 		}
 		catch (err)
 		{
-			console.error('Unable to sync the database models:', err);
+			this.logger.error('Unable to sync the database models:', err);
 		}
 	}
 
