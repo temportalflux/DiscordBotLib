@@ -13,6 +13,7 @@ module.exports = {
 		mapJsonToEntries = ((object) => object),
 		getFilterFromJson,
 		createEntryFromJson,
+		onSuccess=(argv)=>{},
 	}) => async (argv) =>
 	{
 		if (!argv.message.guild.available) { return; }
@@ -44,6 +45,8 @@ module.exports = {
 					createEntryFromJson(entry)
 				)
 			);
+			
+			await onSuccess(argv);
 		}
 		catch (e)
 		{
