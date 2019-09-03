@@ -30,8 +30,8 @@ class Application
 				error: console.error,
 			},
 		};
-		console.log('Creating application with options:', lodash.defaultsDeep({}, defaults, options));
-		lodash.defaultsDeep(this, defaults, options);
+		console.log('Creating application with options:', lodash.defaultsDeep({}, options, defaults));
+		lodash.defaultsDeep(this, options, defaults);
 		this.commandListener = new (this.classes.CommandListener)(this, this.commands);
 		this.init(); // async
 	}
