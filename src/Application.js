@@ -1,7 +1,4 @@
 const lodash = require('lodash');
-const DiscordBot = require('./DiscordBot.js');
-const CommandListener = require('./CommandListener.js');
-const Database = require('./Database.js');
 
 class Application
 {
@@ -14,6 +11,11 @@ class Application
 	constructor(options)
 	{
 		const defaults = {
+			classes: {
+				CommandListener: require('./CommandListener.js'),
+				DiscordBot: require('./DiscordBot.js'),
+				Database: require('./Database.js'),
+			},
 			discordToken: 'INVALID_TOKEN',
 			applicationName: 'SampleDiscordBot',
 			databaseModels: {},
@@ -28,12 +30,8 @@ class Application
 				error: console.error,
 			},
 		};
-		lodash.assignIn(this, options);
-		lodash.keys(defaults).forEach((key) => {
-			if (this[key] === undefined)
-				this[key] = defaults[key];
-		});
-		this.commandListener = new CommandListener(this, this.commands);
+		lodash.assignIn(this, lodash.defaultsDeep(defaults, options));
+		this.commandListener = new (this.classes.CommandListener)(this, this.commands);
 		this.init(); // async
 	}
 
@@ -50,7 +48,7 @@ class Application
 
 	async initBot()
 	{
-		this.bot = new DiscordBot({
+		this.bot = new (this.classes.DiscordBot)({
 			application: this,
 			token: this.discordToken
 		}, this.logger);
@@ -66,7 +64,7 @@ class Application
 
 	async createDatabase(databaseName, dialect, logger, logging=false)
 	{
-		this.database = new Database(databaseName, dialect,
+		this.database = new (this.classes.Database)(databaseName, dialect,
 			this.databaseModels,
 			{
 				// The `timestamps` field specify whether or not the `createdAt` and `updatedAt` fields will be created.
