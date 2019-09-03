@@ -30,7 +30,8 @@ class Application
 				error: console.error,
 			},
 		};
-		lodash.assignIn(this, lodash.defaultsDeep(defaults, options));
+		console.log('Creating application with options:', lodash.defaultsDeep({}, defaults, options));
+		lodash.defaultsDeep(this, defaults, options);
 		this.commandListener = new (this.classes.CommandListener)(this, this.commands);
 		this.init(); // async
 	}
