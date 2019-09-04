@@ -46,8 +46,7 @@ class CommandListener
 				const {argv, output} = await this.parseCommand(match[1], msg);
 				if (output)
 				{
-					console.log(`"${output}"`);
-					await msg.channel.send(output);
+					await msg.channel.send(output.replace('\t', ' '));
 				}
 			}
 			catch (error)
