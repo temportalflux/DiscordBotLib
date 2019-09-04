@@ -52,6 +52,7 @@ class CommandListener
 			}
 			catch (error)
 			{
+				console.log(`Error message: "${error.message}"`);
 				await msg.reply(error.message);
 			}
 		}
