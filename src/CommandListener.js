@@ -46,6 +46,7 @@ class CommandListener
 				const {argv, output} = await this.parseCommand(match[1], msg);
 				if (output.trim())
 				{
+					console.log(`"${output.trim()}"`);
 					await msg.reply(output.trim());
 				}
 			}
