@@ -19,8 +19,7 @@ module.exports = {
 	funcTemplate: (modelKey, attributes, modelToString, filter={}) => async (argv) =>
 	{
 		if (!argv.message.guild.available) { return; }
-		console.log(argv.count, typeof argv.count);
-		console.log(argv.page, typeof argv.page);
+		
 		const text = await argv.application.database.listAsText(
 			typeof modelKey === 'function' ? modelKey(argv) : modelKey,
 			Utils.Sql.createWhereFilter(lodash.assign(
@@ -28,8 +27,7 @@ module.exports = {
 				typeof filter === 'function' ? filter(argv) : filter
 			)),
 			attributes, modelToString,
-			typeof argv.count === 'integer' ? argv.count : 10,
-			typeof argv.page === 'integer' ? argv.page : 0
+			argv.count, argv.page
 		);
 	
 		await argv.message.channel.send(text);

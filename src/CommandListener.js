@@ -44,9 +44,9 @@ class CommandListener
 			try
 			{
 				const {argv, output} = await this.parseCommand(match[1], msg);
-				if (output)
+				if (output.trim())
 				{
-					await msg.reply(output);
+					await msg.reply(output.trim());
 				}
 			}
 			catch (error)
