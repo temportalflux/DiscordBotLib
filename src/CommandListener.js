@@ -44,10 +44,10 @@ class CommandListener
 			try
 			{
 				const {argv, output} = await this.parseCommand(match[1], msg);
-				if (output.trim())
+				if (output)
 				{
-					console.log(`"${output.trim()}"`);
-					await msg.reply(output.trim());
+					console.log(`"${output}"`);
+					await msg.channel.send(output);
 				}
 			}
 			catch (error)
