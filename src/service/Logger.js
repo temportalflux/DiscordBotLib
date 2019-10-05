@@ -7,19 +7,19 @@ module.exports = (serviceName) => {
 	});
 	return {
 		info: (message) => new Promise((resolve) => {
-			log.info(message, () => {
+			log.info(message, 1000, () => {
 				console.log(message);
 				resolve();
 			});
 		}),
 		warn: (message) => new Promise((resolve) => {
-			log.warn(message, () => {
+			log.warn(message, 1000, () => {
 				console.warn(message);
 				resolve();
 			});
 		}),
 		error: (message) => new Promise((resolve) => {
-			log.error(message, () => {
+			log.error(message, 1000, () => {
 				console.error(message);
 				resolve();
 			});
